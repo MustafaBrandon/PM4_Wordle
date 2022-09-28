@@ -14,6 +14,15 @@ def wordle():
 
     def enter_action(s):
         gw.show_message("You have to implement this method.")
+        # Check if user filled out five letters
+        # Check if entered word is actual word (optional)
+        # Trigger comparison logic of entered and wordToGuess
+        # Update GUI and move on to next round or terminate game
+
+    # On game start select a random word from our word list
+    randIndex = random.randint(0, len(FIVE_LETTER_WORDS))
+    wordToGuess = FIVE_LETTER_WORDS[randIndex]
+    # print(wordToGuess)
 
     gw = WordleGWindow()
     gw.add_enter_listener(enter_action)
