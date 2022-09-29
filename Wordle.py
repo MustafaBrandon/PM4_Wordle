@@ -18,25 +18,46 @@ def wordle():
         # currentRow = gw.get_current_row()
         currentGuess = ''
         for i in range(5):
-            currentGuess += gw.get_square_letter(row, i)
+            currentLetter = gw.get_square_letter(row, i)
+            #if currentLetter is blank, then don't add it to the currentGuess
+            if currentLetter == ' ':
+                currentGuess = currentGuess
+            else:
+                 currentGuess += gw.get_square_letter(row, i)
         return currentGuess
 
     def enter_action(s):
 
+        #this needs to be incremented after each guess that meets the criteria (5 letters, in the dictionary)
         currentGuess = get_guess(0)
-        print(currentGuess)
+        
+        #get current length, if it's not 5 then break out of this function and don't increment the row
+        if len(currentGuess) == 5:
 
-        gw.set_square_color(0,0,'green')
-        gw.set_square_color(0,1,'yellow')
-        gw.set_square_color(0,2,'grey')
+            #check if lower case word is in the dictionary, if not, show message saying word is not in dictionary
+            if currentGuess.lower() in FIVE_LETTER_WORDS:
+                
+                
+                gw.set_square_color(0,0,'green')
+                gw.set_square_color(0,1,'yellow')
+                gw.set_square_color(0,2,'grey')
 
-        # Increment current row, needs logic for end of game
-        gw.set_current_row(gw.get_current_row() + 1)
+                # Increment current row, needs logic for end of game
+                gw.set_current_row(gw.get_current_row() + 1)
+                
+                # Check if entered word is actual word (optional)
+                # Trigger comparison logic of entered and wordToGuess
+                # Update GUI and move on to next round or terminate game
+                
+            else:
+                gw.show_message("Word not in dictionary")
 
-        # Check if user filled out five letters
-        # Check if entered word is actual word (optional)
-        # Trigger comparison logic of entered and wordToGuess
-        # Update GUI and move on to next round or terminate game
+                
+
+        else:
+            gw.show_message("You must enter a 5 letter word")
+
+            
 
 
     # On game start select a random word from our word list
