@@ -66,11 +66,12 @@ def wordle():
                     if letter in wordToGuessList:
                         indexGuess = currentGuess.index(letter)
 
+
+                        #our problems are right here
                         #account for possiblity of multiple letters in word
                         indexAnswer = []
-                        for i in range(len(wordToGuessList)):
-                                if wordToGuessList[i] == i:
-                                    indexAnswer.append(i)
+                        for letterofAnswer in range(len(wordToGuessList)):
+                            indexAnswer.append(letterofAnswer)
 
                         print(indexAnswer)
                         print(indexGuess)
