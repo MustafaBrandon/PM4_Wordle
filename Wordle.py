@@ -17,11 +17,11 @@ def wordle():
 
     def winFunction(row):
         print("got here")
-        gw.set_square_color(0,0,'green')
-        gw.set_square_color(0,1,'green')
-        gw.set_square_color(0,2,'green')
-        gw.set_square_color(0,3,'green')
-        gw.set_square_color(0,4,'green')
+        gw.set_square_color(0,0,"#66BB66")
+        gw.set_square_color(0,1,"#66BB66")
+        gw.set_square_color(0,2,"#66BB66")
+        gw.set_square_color(0,3,"#66BB66")
+        gw.set_square_color(0,4,"#66BB66")
 
         #you won the game
         gw.show_message("That is correct!")
@@ -70,8 +70,13 @@ def wordle():
                         #our problems are right here
                         #account for possiblity of multiple letters in word
                         indexAnswer = []
-                        for letterofAnswer in range(len(wordToGuessList)):
-                            indexAnswer.append(letterofAnswer)
+                        # Setting letters yellow as default color
+                        gw.set_square_color(gw.get_current_row(),indexGuess,"#CCBB66")
+                        
+                        
+                        #for letterofAnswer in range(len(wordToGuessList)):
+                         #   indexAnswer.append(letterofAnswer)
+                         
 
                         print(indexAnswer)
                         print(indexGuess)
@@ -80,12 +85,13 @@ def wordle():
 
                         #account for multipleof same letter in the word
                         for multipleLetters in indexAnswer:
+
                             if indexGuess == indexAnswer:
                                 gw.set_square_color(0,indexGuess,"#66BB66")
 
                             #if not equal, but there is a result, then it is yellow
                             elif indexGuess != indexAnswer:
-                                gw.set_square_color(0,indexGuess,"#CCBB66")
+                                
 
 
                         #else, color gray
