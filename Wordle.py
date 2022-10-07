@@ -9,22 +9,19 @@ from asyncio.windows_events import NULL
 import random
 
 from WordleDictionary import FIVE_LETTER_WORDS
-from WordleGraphics import WordleGWindow, N_COLS, N_ROWS
+from WordleGraphics import CORRECT_COLOR, PRESENT_COLOR, WordleGWindow, N_COLS, N_ROWS
 
 def wordle():
 
 
 
     def winFunction(row):
-        print("got here")
-        gw.set_square_color(0,0,"#66BB66")
-        gw.set_square_color(0,1,"#66BB66")
-        gw.set_square_color(0,2,"#66BB66")
-        gw.set_square_color(0,3,"#66BB66")
-        gw.set_square_color(0,4,"#66BB66")
+        print("Congrats from the console!")
 
         #you won the game
         gw.show_message("That is correct!")
+        # time.sleep(4)
+        # exit()
 
 
 
@@ -38,13 +35,13 @@ def wordle():
             if currentLetter == ' ':
                 currentGuess = currentGuess
             else:
-                 currentGuess += gw.get_square_letter(row, i)
+                currentGuess += gw.get_square_letter(row, i)
         return currentGuess
 
     def enter_action(s):
 
         #this needs to be incremented after each guess that meets the criteria (5 letters, in the dictionary)
-        currentGuess = get_guess(0)
+        currentGuess = get_guess(gw.get_current_row())
         currentGuess= currentGuess.lower()
         
         #get current length, if it's not 5 then break out of this function and don't increment the row
@@ -55,67 +52,43 @@ def wordle():
                 
                 # if word is correct
 
-                if currentGuess.lower() == wordToGuess:
-                    winFunction("row")
-
 
                 #guess logic 
                 wordToGuessList = list(wordToGuess)
                 print(wordToGuessList)
-                for letter in currentGuess:
+                # main loop to check each letter in guess
+                print(currentGuess)
+                for i in range(len(currentGuess)):
+                    letter = currentGuess[i]
+                    print(letter)
                     if letter in wordToGuessList:
-                        indexGuess = currentGuess.index(letter)
 
-
-                        #our problems are right here
-                        #account for possiblity of multiple letters in word
-                        indexAnswer = []
                         # Setting letters yellow as default color
-                        gw.set_square_color(gw.get_current_row(),indexGuess,"#CCBB66")
-                        
-                        
-                        #for letterofAnswer in range(len(wordToGuessList)):
-                         #   indexAnswer.append(letterofAnswer)
-                         
-
-                        print(indexAnswer)
-                        print(indexGuess)
-                        
-                        #if the indexes are equal, then correct posisiton, color it green
-
-                        #account for multipleof same letter in the word
-                        for multipleLetters in indexAnswer:
-
-                            if indexGuess == indexAnswer:
-                                gw.set_square_color(0,indexGuess,"#66BB66")
-
-                            #if not equal, but there is a result, then it is yellow
-                            elif indexGuess != indexAnswer:
-                                
-
+                        gw.set_square_color(gw.get_current_row(),i,"#CCBB66")
+                        if (gw.get_key_color(letter.upper()) != CORRECT_COLOR):
+                            gw.set_key_color(letter.upper(),PRESENT_COLOR)
+                    
+                        if wordToGuess[i] == letter:
+                            gw.set_square_color(gw.get_current_row(),i,"#66BB66")
+                            gw.set_key_color(letter.upper(),CORRECT_COLOR)
 
                         #else, color gray
                     else:
-                        indexGuess = currentGuess.index(letter)
-                        gw.set_square_color(0,indexGuess,"#999999")
+                        gw.set_square_color(gw.get_current_row(),i,"#999999")
 
-
-
-                #break guessed word  into list of letters
-                #break answer word into list of letters
-                # compare letters in guessed word to correct word
-
-
-                #color the correct letters
-
-                #increment to next line
-
-                # gw.set_square_color(0,0,'green')
-                # gw.set_square_color(0,1,'yellow')
-                # gw.set_square_color(0,2,'grey')
+                # Check our win condition
+                if currentGuess.lower() == wordToGuess:
+                    winFunction("row")
+                
 
                 # Increment current row, needs logic for end of game
+                if (gw.get_current_row() == 5):
+                    print('end')
+                    gw.show_message(("So close! The word was: "+ wordToGuess))
+
                 gw.set_current_row(gw.get_current_row() + 1)
+
+
                 
                 # Check if entered word is actual word (optional)
                 # Trigger comparison logic of entered and wordToGuess
@@ -128,9 +101,7 @@ def wordle():
 
         else:
             gw.show_message("You must enter a 5 letter word")
-
-            
-
+    
 
     # On game start select a random word from our word list
     randIndex = random.randint(0, len(FIVE_LETTER_WORDS))
