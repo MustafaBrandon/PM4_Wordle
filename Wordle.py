@@ -7,6 +7,9 @@ Section 002
 
 from asyncio.windows_events import NULL
 import random
+import time
+import subprocess
+
 
 from WordleDictionary import FIVE_LETTER_WORDS
 from WordleGraphics import CORRECT_COLOR, PRESENT_COLOR, WordleGWindow, N_COLS, N_ROWS
@@ -23,6 +26,7 @@ def wordle():
         # after they win the game. They must restart the window to start over.
         gw._enter_listeners = []
         print(gw._enter_listeners)
+        
 
     def get_guess(row):
         currentGuess = ''
@@ -62,8 +66,8 @@ def wordle():
 
                         # Setting letters yellow as default color
                         gw.set_square_color(gw.get_current_row(),i,"#CCBB66")
-                        if (gw.get_key_color(letter.upper()) != CORRECT_COLOR):
-                            gw.set_key_color(letter.upper(),PRESENT_COLOR)
+                        gw.set_key_color(letter.upper(),PRESENT_COLOR)
+                        # if (gw.get_key_color(letter.upper()) != CORRECT_COLOR):
                     
                         if wordToGuess[i] == letter:
                             gw.set_square_color(gw.get_current_row(),i,"#66BB66")
@@ -72,10 +76,19 @@ def wordle():
                         #else, color gray
                     else:
                         gw.set_square_color(gw.get_current_row(),i,"#999999")
+                        gw.set_key_color(letter.upper(),"#999999")
 
                 # Check our win condition
                 if currentGuess.lower() == wordToGuess:
                     winFunction("row")
+                    # time.sleep(5)
+                    # exit()
+                    # r = subprocess.run(['echo', 'hello timeout'], timeout=5)
+                    # exit()
+                    # try:
+                    #     r = subprocess.run(['ping', 'www.google.com'], timeout=5)
+                    # except subprocess.TimeoutExpired as e:
+                    #     print(e)
                 else:
                     # If they didn't win, increment current row
                     if (gw.get_current_row() == 5):
