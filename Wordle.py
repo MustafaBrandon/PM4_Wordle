@@ -16,11 +16,9 @@ from WordleGraphics import CORRECT_COLOR, PRESENT_COLOR, WordleGWindow, N_COLS, 
 
 def wordle():
 
-    def winFunction(row):
-        print("Congrats from the console!")
-
-        #you won the game
+    def winFunction():
         gw.show_message("That is correct!")
+        print("Congrats from the console!")
         print(gw._enter_listeners)
         # Remove the event listener for the enter key so that they can't try and more guesses 
         # after they win the game. They must restart the window to start over.
@@ -44,6 +42,7 @@ def wordle():
         #this needs to be incremented after each guess that meets the criteria (5 letters, in the dictionary)
         currentGuess = get_guess(gw.get_current_row())
         currentGuess= currentGuess.lower()
+        endProgram = False
         
         #get current length, if it's not 5 then break out of this function and don't increment the row
         if len(currentGuess) == 5:
@@ -80,15 +79,7 @@ def wordle():
 
                 # Check our win condition
                 if currentGuess.lower() == wordToGuess:
-                    winFunction("row")
-                    # time.sleep(5)
-                    # exit()
-                    # r = subprocess.run(['echo', 'hello timeout'], timeout=5)
-                    # exit()
-                    # try:
-                    #     r = subprocess.run(['ping', 'www.google.com'], timeout=5)
-                    # except subprocess.TimeoutExpired as e:
-                    #     print(e)
+                    winFunction()
                 else:
                     # If they didn't win, increment current row
                     if (gw.get_current_row() == 5):
@@ -109,6 +100,7 @@ def wordle():
     wordToGuess = FIVE_LETTER_WORDS[randIndex]
     print(wordToGuess)
     gw = WordleGWindow()
+    
     gw.show_message("Enter your guess!")
     gw.add_enter_listener(enter_action)
     
