@@ -1,8 +1,8 @@
 # File: Wordle.py
 
 """
-This module is the starter file for the Wordle assignment.
-BE SURE TO UPDATE THIS COMMENT WHEN YOU WRITE THE CODE.
+William Hunter Nelson, Brandon Hunt, Euigun Jung, Brennan Williams, Jeff Hoather
+Section 002
 """
 
 from asyncio.windows_events import NULL
@@ -13,21 +13,18 @@ from WordleGraphics import CORRECT_COLOR, PRESENT_COLOR, WordleGWindow, N_COLS, 
 
 def wordle():
 
-
-
     def winFunction(row):
         print("Congrats from the console!")
 
         #you won the game
         gw.show_message("That is correct!")
-        # time.sleep(4)
-        # exit()
-
-
-
+        print(gw._enter_listeners)
+        # Remove the event listener for the enter key so that they can't try and more guesses 
+        # after they win the game. They must restart the window to start over.
+        gw._enter_listeners = []
+        print(gw._enter_listeners)
 
     def get_guess(row):
-        # currentRow = gw.get_current_row()
         currentGuess = ''
         for i in range(5):
             currentLetter = gw.get_square_letter(row, i)
@@ -79,25 +76,16 @@ def wordle():
                 # Check our win condition
                 if currentGuess.lower() == wordToGuess:
                     winFunction("row")
-                
+                else:
+                    # If they didn't win, increment current row
+                    if (gw.get_current_row() == 5):
+                        print('end')
+                        gw.show_message(("So close! The word was: "+ wordToGuess))
 
-                # Increment current row, needs logic for end of game
-                if (gw.get_current_row() == 5):
-                    print('end')
-                    gw.show_message(("So close! The word was: "+ wordToGuess))
-
-                gw.set_current_row(gw.get_current_row() + 1)
-
-
-                
-                # Check if entered word is actual word (optional)
-                # Trigger comparison logic of entered and wordToGuess
-                # Update GUI and move on to next round or terminate game
+                    gw.set_current_row(gw.get_current_row() + 1)
                 
             else:
-                gw.show_message("Word not in dictionary")
-
-                
+                gw.show_message("Word not in dictionary")              
 
         else:
             gw.show_message("You must enter a 5 letter word")
@@ -107,15 +95,10 @@ def wordle():
     randIndex = random.randint(0, len(FIVE_LETTER_WORDS))
     wordToGuess = FIVE_LETTER_WORDS[randIndex]
     print(wordToGuess)
-
     gw = WordleGWindow()
     gw.show_message("Enter your guess!")
     gw.add_enter_listener(enter_action)
-
-
-
-#function to compare 
-
+    
 
 # Startup code
 
